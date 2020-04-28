@@ -10,3 +10,11 @@
 #   Write to xml data
 #   Write to file to Output foder
 #   Copy image to output folder
+
+
+# Read all foder
+import os
+directory = 'SampleData'
+os.walk(directory)
+listfolder = [x[0] for x in os.walk(directory)]
+print (listfolder)

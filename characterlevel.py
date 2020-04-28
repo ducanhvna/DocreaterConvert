@@ -18,8 +18,6 @@ import glob
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 def ReadGroudTruth(filepath):
-    
-    
 
     # parse an xml file by name
     mydoc = minidom.parse(filepath)

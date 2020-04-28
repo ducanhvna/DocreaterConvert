@@ -22,10 +22,11 @@ python characterlevel.py
 ### Word Level
 
 ## Scrren shot
-![result](Images/Screenshot 2020-04-28 16.38.46.png)
-![Open folder](Images/Screenshot 2020-04-28 16.41.30.png)
+![result](/Images/resultfolder.png)
 
-![show in LabelImg](Images/Screenshot 2020-04-28 16.41.48.png)
+![Open folder](/Images/Screenshot 2020-04-28 16.41.30.png)
+
+![show in LabelImg](/Images/Screenshot 2020-04-28 16.41.48.png)
 
 ![Next Image](https://www.dropbox.com/s/mrini50imlwf4si/Screenshot%202020-04-28%2016.42.03.png)
 

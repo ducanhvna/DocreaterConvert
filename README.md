@@ -24,11 +24,11 @@ python characterlevel.py
 ## Scrren shot
 ![result](/Images/resultfolder.png)
 
-![Open folder](/Images/Screenshot 2020-04-28 16.41.30.png)
+![Open folder](/Images/opendir.png)
 
-![show in LabelImg](/Images/Screenshot 2020-04-28 16.41.48.png)
+![show in LabelImg](/Images/result1.png)
 
-![Next Image](https://www.dropbox.com/s/mrini50imlwf4si/Screenshot%202020-04-28%2016.42.03.png)
+![Next Image](/Images/result2.png)
 
 ## Ref
 [Reading and Writing XML Files in Python](https://stackabuse.com/reading-and-writing-xml-files-in-python/)

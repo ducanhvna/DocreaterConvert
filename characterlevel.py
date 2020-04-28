@@ -66,14 +66,28 @@ def ReadGroudTruth(filepath):
 def WriteXml(filepath, outlocation):
     # create the file structure
     data = ET.Element('annotation')
-    items = ET.SubElement(data, 'items')
-    item1 = ET.SubElement(items, 'item')
-    item2 = ET.SubElement(items, 'item')
-    item1.set('name','item1')
-    item2.set('name','item2')
-    item1.text = 'item1abc'
-    item2.text = 'item2abc'
+    folder = ET.SubElement(data, 'folder')
+    folder.text = 'windows_v1.8.0'
+    
+    filename = ET.SubElement(data, 'filename')
+    path = ET.SubElement(data, 'path')
+    source = ET.SubElement(data, 'source')
 
+    database = ET.SubElement(source, 'database')
+
+    # size
+    size = ET.SubElement(data, 'size')
+    width = ET.SubElement(size, 'width')
+    height = ET.SubElement(size, 'height')
+    depth = ET.SubElement(size, 'depth')
+
+    segmented = ET.SubElement(data, 'segmented')
+    objectele = ET.SubElement(data, 'object')
+    name = ET.SubElement(objectele, 'name')
+    pose = ET.SubElement(objectele, 'pose')
+    truncated = ET.SubElement(objectele, 'truncated')
+    difficult = ET.SubElement(objectele, 'difficult')
+    # item1.set('name','item1')
     # create a new XML file with the results
     mydata = ET.tostring(data)
     myfile = open("items2.xml", "wb")

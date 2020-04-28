@@ -17,16 +17,52 @@ import os
 import glob
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
+
 def ReadGroudTruth(filepath):
+     # create the file structure
+    data = ET.Element('annotation')
+    folder = ET.SubElement(data, 'folder')
+    folder.text = 'windows_v1.8.0'
+    
+    filename = ET.SubElement(data, 'filename')
+    path = ET.SubElement(data, 'path')
+    source = ET.SubElement(data, 'source')
+
+    database = ET.SubElement(source, 'database')
+    database.text = 'Unknown'
+
+   
 
     # parse an xml file by name
     mydoc = minidom.parse(filepath)
+
+    # document common info
+     # size
+    size = ET.SubElement(data, 'size')
+    width = ET.SubElement(size, 'width')
+    root = items = mydoc.getElementsByTagName('document')[0]
+    # print(root.attributes['width'].value)
+    width.text = root.attributes['width'].value
+    
+
+    height = ET.SubElement(size, 'height')
+    height.text = root.attributes['height'].value
+    
+    # fixed deep to 3
+    depth = ET.SubElement(size, 'depth')
+    depth.text = '3'
+
+    # fixed segmented to 0
+    segmented = ET.SubElement(data, 'segmented')
+    segmented.text = '0'
 
     items = mydoc.getElementsByTagName('textBlock')
 
     # one specific item attribute
     print('Item #1 attribute:')
     print(items[0].attributes['height'].value)
+
+    
 
     # all item attributes
     print('\nAll attributes:')
@@ -52,13 +88,33 @@ def ReadGroudTruth(filepath):
                     chary = celem.attributes['y'].value
                     charwidth = celem.attributes['width'].value
                     charheight = celem.attributes['height'].value
+
+                    # each char add 1 element
+                    objectele = ET.SubElement(data, 'object')
+                    name = ET.SubElement(objectele, 'name')
+                    name.text = chardisplay
+
+                    pose = ET.SubElement(objectele, 'pose')
+                    pose.text = 'Unspecified'
+
+                    truncated = ET.SubElement(objectele, 'truncated')
+                    truncated.text = '0'
+
+                    difficult = ET.SubElement(objectele, 'difficult')
+                    difficult.text = '0'
+                    # item1.set('name','item1')
+                    # create a new XML file with the results
+        mydata = ET.tostring(data)
+        myfile = open("items2.xml", "wb")
+        myfile.write(mydata)
+
         
     # one specific item's data
     print('\nItem #1 data:')
     print(items[0].firstChild.data)
     print(items[0].childNodes[0].data)
 
-    # all items data
+    # all items data`
     print('\nAll item data:')
     for elem in items:
         print(elem.firstChild.data)
@@ -68,7 +124,7 @@ def WriteXml(filepath, outlocation):
     data = ET.Element('annotation')
     folder = ET.SubElement(data, 'folder')
     folder.text = 'windows_v1.8.0'
-    
+
     filename = ET.SubElement(data, 'filename')
     path = ET.SubElement(data, 'path')
     source = ET.SubElement(data, 'source')
@@ -113,4 +169,4 @@ if not os.path.exists(outputfoder):
 
 listfolder = [Extract(x[0], outputfoder) for x in os.walk(directory)]
 print (listfolder)
-WriteXml('sample',outputfoder)
+# WriteXml('sample',outputfoder)

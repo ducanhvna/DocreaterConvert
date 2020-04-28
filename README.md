@@ -7,6 +7,12 @@
 python 3. 
 
 ## Installation
+```bash
+conda create - n myenv python=3.6
+conda activate myenv
+pip install -r requirements.txt
+```
+
 ### Character Level
 
 ```bash

@@ -17,8 +17,10 @@ import os
 import glob
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
+import shutil
+import datetime
 
-def ReadGroudTruth(filepath):
+def ReadGroudTruth(filepath, foldername, outLoction):
      # create the file structure
     data = ET.Element('annotation')
     folder = ET.SubElement(data, 'folder')
@@ -122,7 +124,7 @@ def ReadGroudTruth(filepath):
                     # item1.set('name','item1')
                     # create a new XML file with the results
         mydata = ET.tostring(data)
-        myfile = open("items2.xml", "wb")
+        myfile = open(outLoction + "/" + foldername + ".xml", "wb")
         myfile.write(mydata)
 
         
@@ -168,8 +170,14 @@ def WriteXml(filepath, outlocation):
 
 def ExtractData(folderpath, outLoction):
     # List all file
-    mylist = [ReadGroudTruth(f) for f in glob.glob(folderpath+ "/*.od")]
+    foldername = os.path.basename(folderpath)
+    mylist = [ReadGroudTruth(f, foldername, outLoction) for f in glob.glob(folderpath+ "/*.od")]
     
+    # Copy and rename all image file
+    for f in glob.glob(folderpath+ "/*.png"):
+        src_dir=f
+        dst_dir=outLoction + '/' + os.path.basename(folderpath) + ".png"
+        shutil.copy(src_dir,dst_dir)
     # Read ground truth
 
 

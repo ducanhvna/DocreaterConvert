@@ -1,0 +1,12 @@
+<!DOCTYPE stone PUBLIC '-//XADECK//DTD Random Old Document 1.0 //EN' 'http://www-imagis.imag.fr/DTD/rand.dtd'>
+<!--This file describe an ancient document image-->
+<<properties> doc_image="D:/Research5/Cyberlogitec/OCR_group/03_Training_Data_Arrangement/images/image_1.png">
+ <background>test.JPG</background>
+ <bottomMargin>5</bottomMargin>
+ <leftMargin>5</leftMargin>
+ <lineSpacing>15</lineSpacing>
+ <nbColumn>1</nbColumn>
+ <nbRow>1</nbRow>
+ <rightMargin>5</rightMargin>
+ <topMargin>5</topMargin>
+</<properties>>

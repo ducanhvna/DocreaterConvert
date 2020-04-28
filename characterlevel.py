@@ -102,6 +102,23 @@ def ReadGroudTruth(filepath):
 
                     difficult = ET.SubElement(objectele, 'difficult')
                     difficult.text = '0'
+
+                    bndbox = ET.SubElement(objectele, 'bndbox')
+                    xmin = ET.SubElement(bndbox, 'xmin')
+                    xmin.text = str(int(blockx) + int(charx))
+
+                    ymin = ET.SubElement(bndbox, 'ymin')
+                    ymin.text = str(int(blocky) + int(chary))
+
+                    xmax = ET.SubElement(bndbox, 'xmax')
+                    xmax.text = str(int(xmin.text) + int(charwidth))
+
+                    ymax = ET.SubElement(bndbox, 'ymax')
+                    ymax.text = str(int(ymin.text) + int(charheight))
+
+                    
+
+                    
                     # item1.set('name','item1')
                     # create a new XML file with the results
         mydata = ET.tostring(data)

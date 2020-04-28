@@ -32,7 +32,27 @@ def ReadGroudTruth(filepath):
     print('\nAll attributes:')
     for elem in items:
         print(elem.attributes['height'].value)
+        pragraphs = elem.getElementsByTagName('paragraph')
+        blockwidth = elem.attributes['width'].value
+        blockheight = elem.attributes['height'].value
+        blockx = elem.attributes['x'].value
+        blocky = elem.attributes['y'].value
 
+        for pragraph in pragraphs:
+            strings = pragraph.getElementsByTagName('string')
+
+            for s in strings:
+                chars = s.getElementsByTagName('char')
+
+                for celem in chars:
+                    # character
+                    print(celem.attributes['display'].value)
+                    chardisplay = celem.attributes['display'].value
+                    charx = celem.attributes['x'].value
+                    chary = celem.attributes['y'].value
+                    charwidth = celem.attributes['width'].value
+                    charheight = celem.attributes['height'].value
+        
     # one specific item's data
     print('\nItem #1 data:')
     print(items[0].firstChild.data)
@@ -43,7 +63,21 @@ def ReadGroudTruth(filepath):
     for elem in items:
         print(elem.firstChild.data)
 
+def WriteXml(filepath, outlocation):
+    # create the file structure
+    data = ET.Element('annotation')
+    items = ET.SubElement(data, 'items')
+    item1 = ET.SubElement(items, 'item')
+    item2 = ET.SubElement(items, 'item')
+    item1.set('name','item1')
+    item2.set('name','item2')
+    item1.text = 'item1abc'
+    item2.text = 'item2abc'
 
+    # create a new XML file with the results
+    mydata = ET.tostring(data)
+    myfile = open("items2.xml", "wb")
+    myfile.write(mydata)
 
 def ExtractData(folderpath, outLoction):
     # List all file
@@ -65,3 +99,4 @@ if not os.path.exists(outputfoder):
 
 listfolder = [Extract(x[0], outputfoder) for x in os.walk(directory)]
 print (listfolder)
+WriteXml('sample',outputfoder)

@@ -14,9 +14,11 @@
 
 # Read all foder
 import os
-
+import glob
 def ExtractData(folderpath, outLoction):
-    
+    # List all file
+    mylist = [f for f in glob.glob(folderpath+ "/*.txt")]
+    print(mylist)
     return 1
 Extract = lambda i,o : ExtractData(i,o)
 

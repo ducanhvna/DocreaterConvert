@@ -15,9 +15,45 @@
 # Read all foder
 import os
 import glob
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
+def ReadGroudTruth(filepath):
+    
+    
+
+    # parse an xml file by name
+    mydoc = minidom.parse(filepath)
+
+    items = mydoc.getElementsByTagName('textBlock')
+
+    # one specific item attribute
+    print('Item #1 attribute:')
+    print(items[0].attributes['height'].value)
+
+    # all item attributes
+    print('\nAll attributes:')
+    for elem in items:
+        print(elem.attributes['height'].value)
+
+    # one specific item's data
+    print('\nItem #1 data:')
+    print(items[0].firstChild.data)
+    print(items[0].childNodes[0].data)
+
+    # all items data
+    print('\nAll item data:')
+    for elem in items:
+        print(elem.firstChild.data)
+
+
+
 def ExtractData(folderpath, outLoction):
     # List all file
-    mylist = [f for f in glob.glob(folderpath+ "/*.txt")]
+    mylist = [ReadGroudTruth(f) for f in glob.glob(folderpath+ "/*.od")]
+    
+    # Read ground truth
+
+
     print(mylist)
     return 1
 Extract = lambda i,o : ExtractData(i,o)

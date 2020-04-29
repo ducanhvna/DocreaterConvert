@@ -13,8 +13,8 @@
 #   Copy image to output folder
 
 # Khac voi character level, word level se dung lai o string
-# Khac voiw paragraph level, trong de dinh dang word level can split thanh tung block 
-# Xu ly them ca truong hop xuong dong nua vi o day cha co block nao
+
+
 # Read all foder
 import os
 import glob
@@ -22,8 +22,6 @@ import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import shutil
 import datetime
-
-
 
 def convert(s): 
     '''

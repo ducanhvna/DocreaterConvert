@@ -101,38 +101,68 @@ def ReadGroudTruth(filepath, foldername, outLoction):
 
             for s in strings:
                 chars = s.getElementsByTagName('char')
-                displayvalues = [celem.attributes['display'].value for celem in chars]
-                xvalues = [blockx + int(celem.attributes['x'].value) for celem in chars]
-                yvalues = [blocky + int(celem.attributes['y'].value) for celem in chars]
-                xmaxvalues = [ blockx + int(celem.attributes['x'].value) + int(celem.attributes['width'].value) for celem in chars]
-                ymaxvalues = [ blocky + int(celem.attributes['y'].value) + int(celem.attributes['height'].value) for celem in chars]
+                lines = []  # Luu thong tin tat ca cac dong moi dong la tap hop cac diem
+                # tach tat ca cac line
+                line = [] #Thong tin 1 dong
+                prveviosx = -1
+                for celem in chars:
+                    if int(celem.attributes['x'].value) < prveviosx:
+                        prveviosx = -1
+                        lines.append(line)
+                        line = [celem]
+                    else:
+                        line.append(celem)
+                        prveviosx = int(celem.attributes['x'].value)
 
-                # each char add 1 element
-                objectele = ET.SubElement(data, 'object')
-                name = ET.SubElement(objectele, 'name')
-                name.text = "chardisplay"
+                lines.append(line)
 
-                pose = ET.SubElement(objectele, 'pose')
-                pose.text = 'Unspecified'
 
-                truncated = ET.SubElement(objectele, 'truncated')
-                truncated.text = '0'
 
-                difficult = ET.SubElement(objectele, 'difficult')
-                difficult.text = '0'
+                for line in lines:
+                    words = [] # luu thong tin tat ca cac words
+                    word = [] # luu thong tin 1 word
+                    for celem in line:
+                        if celem.attributes['display'].value is ' ':
+                            words.append(word)
+                            word = []
+                        else:
+                            word.append(celem)
+                    words.append(word)
 
-                bndbox = ET.SubElement(objectele, 'bndbox')
-                xmin = ET.SubElement(bndbox, 'xmin')
-                xmin.text = str(min(xvalues))
+                    for word in words:
+                        if len(word)>0:
+                            displayvalues = [celem.attributes['display'].value for celem in word]
+                            xvalues = [blockx + int(celem.attributes['x'].value) for celem in word]
+                            yvalues = [blocky + int(celem.attributes['y'].value) for celem in word]
+                            xmaxvalues = [ blockx + int(celem.attributes['x'].value) + int(celem.attributes['width'].value) for celem in word]
+                            ymaxvalues = [ blocky + int(celem.attributes['y'].value) + int(celem.attributes['height'].value) for celem in word]
 
-                ymin = ET.SubElement(bndbox, 'ymin')
-                ymin.text = str(min(yvalues))
+                            # each char add 1 element
+                            objectele = ET.SubElement(data, 'object')
+                            name = ET.SubElement(objectele, 'name')
+                            name.text = convert(displayvalues)
 
-                xmax = ET.SubElement(bndbox, 'xmax')
-                xmax.text = str(max(xmaxvalues))
+                            pose = ET.SubElement(objectele, 'pose')
+                            pose.text = 'Unspecified'
 
-                ymax = ET.SubElement(bndbox, 'ymax')
-                ymax.text = str(max(ymaxvalues))
+                            truncated = ET.SubElement(objectele, 'truncated')
+                            truncated.text = '0'
+
+                            difficult = ET.SubElement(objectele, 'difficult')
+                            difficult.text = '0'
+
+                            bndbox = ET.SubElement(objectele, 'bndbox')
+                            xmin = ET.SubElement(bndbox, 'xmin')
+                            xmin.text = str(min(xvalues))
+
+                            ymin = ET.SubElement(bndbox, 'ymin')
+                            ymin.text = str(min(yvalues))
+
+                            xmax = ET.SubElement(bndbox, 'xmax')
+                            xmax.text = str(max(xmaxvalues))
+
+                            ymax = ET.SubElement(bndbox, 'ymax')
+                            ymax.text = str(max(ymaxvalues))
 
                 # item1.set('name','item1')
                 # create a new XML file with the results

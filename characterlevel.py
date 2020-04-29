@@ -64,7 +64,7 @@ def ReadGroudTruth(filepath, foldername, outLoction):
     print('Item #1 attribute:')
     print(items[0].attributes['height'].value)
 
-    
+    filelines = []
 
     # all item attributes
     print('\nAll attributes:')
@@ -118,15 +118,20 @@ def ReadGroudTruth(filepath, foldername, outLoction):
                     ymax = ET.SubElement(bndbox, 'ymax')
                     ymax.text = str(int(ymin.text) + int(charheight))
 
-                    
+                    filelines += xmin.text + ', ' + ymin.text + ', ' + xmax.text + ", " + ymin.text + ", " 
+                        + xmax.text + ", " + ymax.text + ", " + xmin.text + ", " + ymax.text + ", " + chardisplay + "\r\n"
+
 
                     
                     # item1.set('name','item1')
                     # create a new XML file with the results
         mydata = ET.tostring(data)
         myfile = open(outLoction + "/" + foldername + ".xml", "wb")
+
         myfile.write(mydata)
 
+        myfile = open(outLoction + "/" + foldername + ".txt", "wb")
+        myfile.write(filelines)
         
     # one specific item's data
     print('\nItem #1 data:')

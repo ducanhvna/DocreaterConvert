@@ -53,7 +53,7 @@ def ReadGroudTruth(filepath, foldername, outLoction):
     database = ET.SubElement(source, 'database')
     database.text = 'Unknown'
 
-   
+    filelines = []
 
     # parse an xml file by name
     mydoc = minidom.parse(filepath)
@@ -163,7 +163,9 @@ def ReadGroudTruth(filepath, foldername, outLoction):
 
                             ymax = ET.SubElement(bndbox, 'ymax')
                             ymax.text = str(max(ymaxvalues))
-
+                            
+                            content = xmin.text + ',' + ymin.text + ',' + xmax.text + "," + ymin.text + "," + xmax.text + "," + ymax.text + "," + xmin.text + "," + ymax.text + "," + name.text
+                            filelines.append(content)
                 # item1.set('name','item1')
                 # create a new XML file with the results
 
@@ -213,6 +215,9 @@ def ReadGroudTruth(filepath, foldername, outLoction):
         myfile = open(outLoction + "/" + foldername + ".xml", "wb")
         myfile.write(mydata)
 
+        with open(outLoction + "/" + foldername + '.txt', 'w') as f:
+            for item in filelines:
+                f.write("%s\n" % item)
         
     # one specific item's data
     print('\nItem #1 data:')

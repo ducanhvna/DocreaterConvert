@@ -23,6 +23,21 @@ from xml.dom import minidom
 import shutil
 import datetime
 
+def convert(s): 
+    '''
+    Convert a list of characters into a string
+    '''
+
+    # initialization of string to "" 
+    new = "" 
+
+    # traverse in the string  
+    for x in s: 
+        new += x  
+
+    # return string  
+    return new 
+
 def ReadGroudTruth(filepath, foldername, outLoction):
      # create the file structure
     data = ET.Element('annotation')
@@ -76,56 +91,92 @@ def ReadGroudTruth(filepath, foldername, outLoction):
         pragraphs = elem.getElementsByTagName('paragraph')
         blockwidth = elem.attributes['width'].value
         blockheight = elem.attributes['height'].value
-        blockx = elem.attributes['x'].value
-        blocky = elem.attributes['y'].value
+        blockx = int(elem.attributes['x'].value)
+        blocky = int(elem.attributes['y'].value)
 
         for pragraph in pragraphs:
             strings = pragraph.getElementsByTagName('string')
 
             for s in strings:
                 chars = s.getElementsByTagName('char')
+                displayvalues = [celem.attributes['display'].value for celem in chars]
+                xvalues = [blockx + int(celem.attributes['x'].value) for celem in chars]
+                yvalues = [blocky + int(celem.attributes['y'].value) for celem in chars]
+                xmaxvalues = [ blockx + int(celem.attributes['x'].value) + int(celem.attributes['width'].value) for celem in chars]
+                ymaxvalues = [ blocky + int(celem.attributes['y'].value) + int(celem.attributes['height'].value) for celem in chars]
 
-                for celem in chars:
-                    # character
-                    print(celem.attributes['display'].value)
-                    chardisplay = celem.attributes['display'].value
-                    charx = celem.attributes['x'].value
-                    chary = celem.attributes['y'].value
-                    charwidth = celem.attributes['width'].value
-                    charheight = celem.attributes['height'].value
+                # each char add 1 element
+                objectele = ET.SubElement(data, 'object')
+                name = ET.SubElement(objectele, 'name')
+                name.text = "chardisplay"
 
-                    # each char add 1 element
-                    objectele = ET.SubElement(data, 'object')
-                    name = ET.SubElement(objectele, 'name')
-                    name.text = chardisplay
+                pose = ET.SubElement(objectele, 'pose')
+                pose.text = 'Unspecified'
 
-                    pose = ET.SubElement(objectele, 'pose')
-                    pose.text = 'Unspecified'
+                truncated = ET.SubElement(objectele, 'truncated')
+                truncated.text = '0'
 
-                    truncated = ET.SubElement(objectele, 'truncated')
-                    truncated.text = '0'
+                difficult = ET.SubElement(objectele, 'difficult')
+                difficult.text = '0'
 
-                    difficult = ET.SubElement(objectele, 'difficult')
-                    difficult.text = '0'
+                bndbox = ET.SubElement(objectele, 'bndbox')
+                xmin = ET.SubElement(bndbox, 'xmin')
+                xmin.text = str(min(xvalues))
 
-                    bndbox = ET.SubElement(objectele, 'bndbox')
-                    xmin = ET.SubElement(bndbox, 'xmin')
-                    xmin.text = str(int(blockx) + int(charx))
+                ymin = ET.SubElement(bndbox, 'ymin')
+                ymin.text = str(min(yvalues))
 
-                    ymin = ET.SubElement(bndbox, 'ymin')
-                    ymin.text = str(int(blocky) + int(chary))
+                xmax = ET.SubElement(bndbox, 'xmax')
+                xmax.text = str(max(xmaxvalues))
 
-                    xmax = ET.SubElement(bndbox, 'xmax')
-                    xmax.text = str(int(xmin.text) + int(charwidth))
+                ymax = ET.SubElement(bndbox, 'ymax')
+                ymax.text = str(max(ymaxvalues))
 
-                    ymax = ET.SubElement(bndbox, 'ymax')
-                    ymax.text = str(int(ymin.text) + int(charheight))
+                # item1.set('name','item1')
+                # create a new XML file with the results
+
+
+                # for celem in chars:
+                #     # character
+                #     print(celem.attributes['display'].value)
+                #     chardisplay = celem.attributes['display'].value
+                #     charx = celem.attributes['x'].value
+                #     chary = celem.attributes['y'].value
+                #     charwidth = celem.attributes['width'].value
+                #     charheight = celem.attributes['height'].value
+
+                #     # each char add 1 element
+                #     objectele = ET.SubElement(data, 'object')
+                #     name = ET.SubElement(objectele, 'name')
+                #     name.text = chardisplay
+
+                #     pose = ET.SubElement(objectele, 'pose')
+                #     pose.text = 'Unspecified'
+
+                #     truncated = ET.SubElement(objectele, 'truncated')
+                #     truncated.text = '0'
+
+                #     difficult = ET.SubElement(objectele, 'difficult')
+                #     difficult.text = '0'
+
+                #     bndbox = ET.SubElement(objectele, 'bndbox')
+                #     xmin = ET.SubElement(bndbox, 'xmin')
+                #     xmin.text = str(int(blockx) + int(charx))
+
+                #     ymin = ET.SubElement(bndbox, 'ymin')
+                #     ymin.text = str(int(blocky) + int(chary))
+
+                #     xmax = ET.SubElement(bndbox, 'xmax')
+                #     xmax.text = str(int(xmin.text) + int(charwidth))
+
+                #     ymax = ET.SubElement(bndbox, 'ymax')
+                #     ymax.text = str(int(ymin.text) + int(charheight))
 
                     
 
                     
-                    # item1.set('name','item1')
-                    # create a new XML file with the results
+                #     # item1.set('name','item1')
+                #     # create a new XML file with the results
         mydata = ET.tostring(data)
         myfile = open(outLoction + "/" + foldername + ".xml", "wb")
         myfile.write(mydata)
@@ -189,7 +240,7 @@ def ExtractData(folderpath, outLoction):
 Extract = lambda i,o : ExtractData(i,o)
 
 directory = 'SampleData'
-outputfoder = 'OuputCharacterLevel'
+outputfoder = 'OuputWordLevel'
 # Create Output foder if not exsts
 
 if not os.path.exists(outputfoder):

@@ -247,5 +247,7 @@ if not os.path.exists(outputfoder):
     os.makedirs(outputfoder)
 
 listfolder = [Extract(x[0], outputfoder) for x in os.walk(directory)]
+
+
 print (listfolder)
 # WriteXml('sample',outputfoder)

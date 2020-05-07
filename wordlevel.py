@@ -22,7 +22,7 @@ import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import shutil
 import datetime
-
+from itertools import combinations 
 
 
 def convert(s): 
